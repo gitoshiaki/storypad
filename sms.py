@@ -1,5 +1,4 @@
-from flask import Flask #モジュール/ライブラリを読み込む from パッケージ import クラス（大文字で始まることが多い）
-from flask import request, render_template
+from flask import Flask
 from flask_cors import CORS
 
 import re
@@ -7,17 +6,17 @@ import json
 import itertools
 import collections
 import numpy as np
-from const import NEW_THEME #自作ライブラリの読み込み
+from const import NEW_THEME
 
 app = Flask(__name__)
 CORS(app)
 
 FILE = 'new_comic_dict.json'
-with open(FILE, 'r') as fp: #withを使うと、手動でcloseする必要がない
-    data = json.load(fp) #loadでディクショナリ型に変換
+with open(FILE, 'r') as fp:
+    data = json.load(fp)
 
 
-@app.route('/') #デコレータが呼ばれたら以下の関数を返す
+@app.route('/')
 def hello_world():
     return render_template('index.html')
 
@@ -49,7 +48,7 @@ def network_graph():
     e = []
     for i, thc in enumerate(itertools.combinations(NEW_THEME, 2)):
         id = i + 1
-        thc = [cvt1[th] + 1 for th in thc]  # 切り替え可能
+        thc = [cvt1[th] + 1 for th in thc]
         e.append({
             'id': id,
             'combination': thc,
@@ -57,10 +56,10 @@ def network_graph():
             'ratio': edge[i] / edge.sum()
         })
 
-    return json.dumps({'node': n, 'edge': e}, ensure_ascii=False) #dumps=ディクショナリをjsonに
+    return json.dumps({'node': n, 'edge': e}, ensure_ascii=False) 
 
 
-# TODO apiと関数の構造を最適化
+
 @app.route('/api/trend/genre/<genre>')
 def trend_genre(genre):
 
@@ -94,7 +93,7 @@ def trend_genre(genre):
     return json.dumps({'columns': lst}, ensure_ascii=False)
 
 
-# TODO apiと関数の構造を最適化
+
 @app.route('/api/trend/magazine/<magazine>')
 def trend_magazine(magazine):
 
@@ -172,5 +171,5 @@ def comic(title):
     return json.dumps(info, ensure_ascii=False)
 
 
-if __name__ == '__main__': #
+if __name__ == '__main__': 
     app.run(debug=True, port=8000)
