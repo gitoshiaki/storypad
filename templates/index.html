@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StorypadManagementScreen</title>
+</head>
+<body>
+    <ul>
+        <li><a href="/api/network_graph">GET NETWORK GRAPH</a></li>
+        <li><a href="/api/trend/genre/少年漫画">少年漫画</a></li>
+        <li><a href="/api/trend/genre/青年漫画">青年漫画</a></li>
+        <li><a href="/api/trend/genre/少女漫画">少女漫画</a></li>
+        <li><a href="/api/trend/genre/女性漫画">女性漫画</a></li>
+    </ul>
+
+    <form action="/api/search" method="get">
+        <input type="text" name="title">
+        <input type="submit" value="検索">
+    </form>
+
+</body>
+</html>
