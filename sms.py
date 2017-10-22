@@ -56,7 +56,7 @@ def network_graph():
             'ratio': edge[i] / edge.sum()
         })
 
-    return json.dumps({'node': n, 'edge': e}, ensure_ascii=False) 
+    return json.dumps({'node': n, 'edge': e}, ensure_ascii=False)
 
 
 
@@ -171,5 +171,5 @@ def comic(title):
     return json.dumps(info, ensure_ascii=False)
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     app.run(debug=True, port=8000)
