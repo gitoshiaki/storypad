@@ -17,9 +17,9 @@ with open(FILE, 'r') as fp:
     data = json.load(fp)
 
 
-@app.route('/')
-def hello_world():
-    return render_template('index.html')
+# @app.route('/')
+# def hello_world():
+#     return render_template('index.html')
 
 
 @app.route('/api/network_graph')
