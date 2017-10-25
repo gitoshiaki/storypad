@@ -24,9 +24,9 @@
     <meta name="twitter:description" content="Content description less than 200 characters">
     <meta name="twitter:image" content="https://example.com/image.jpg">
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='static/css/normalize.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='static/css/lib/c3.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='static/css/main.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/normalize.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/lib/c3.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css')}}">
   </head>
   <body>
     <header>
@@ -58,7 +58,7 @@
 
     <!-- スクリプトファイル -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.js" charset="utf-8"></script>
-    <script href="{{ url_for('static', filename='static/js/lib/c3.js')}}" charset="utf-8" ></script>
-    <script href="{{ url_for('static', filename='static/js/lib/main.js')}}" charset="utf-8" ></script>
+    <script src="{{ url_for('static', filename='js/lib/c3.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}" charset="utf-8"></script>
   </body>
 </html>
