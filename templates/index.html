@@ -1,22 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>StorypadManagementScreen</title>
-</head>
-<body>
-    <ul>
-        <li><a href="/api/network_graph">GET NETWORK GRAPH</a></li>
-        <li><a href="/api/trend/genre/少年漫画">少年漫画</a></li>
-        <li><a href="/api/trend/genre/青年漫画">青年漫画</a></li>
-        <li><a href="/api/trend/genre/少女漫画">少女漫画</a></li>
-        <li><a href="/api/trend/genre/女性漫画">女性漫画</a></li>
-    </ul>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard｜Storypad</title>
+    <meta name="description" content="Description of the page less than 150 characters">
+    <link rel="icon" type="image/png" href="https://example.com/favicon32x32.png">
 
-    <form action="/api/search" method="get">
-        <input type="text" name="title">
-        <input type="submit" value="検索">
-    </form>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/page.html">
+    <meta property="og:title" content="Content Title">
+    <meta property="og:image" content="https://example.com/image.jpg">
+    <meta property="og:description" content="Description Here">
+    <meta property="og:site_name" content="Site Name">
+    <meta property="og:locale" content="en_US">
 
-</body>
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@site_account">
+    <meta name="twitter:creator" content="@individual_account">
+    <meta name="twitter:url" content="https://example.com/page.html">
+    <meta name="twitter:title" content="Content Title">
+    <meta name="twitter:description" content="Content description less than 200 characters">
+    <meta name="twitter:image" content="https://example.com/image.jpg">
+
+    <link rel="stylesheet" href="../node_modules/normalize.css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <link rel="stylesheet" href="./css/lib/c3.min.css">
+  </head>
+  <body>
+    <header>
+      <nav>
+        <h1>Storypad</h1>
+        <a href="#">作品名で検索</a>
+        <a href="#">ジャンルで検索</a>
+        <a href="#">該当作品を解析</a>
+      </nav>
+    </header>
+    <main>
+      <section class="search">
+        <h2>Section Title</h2>
+        <p>Section content</p>
+        <div id="chart"></div>
+      </section>
+      <section>
+        <h2>Section Title</h2>
+        <p>Section content</p>
+      </section>
+      <section>
+        <h2>Section Title</h2>
+        <p>Section content</p>
+      </section>
+    </main>
+    <footer>
+
+    </footer>
+
+    <!-- スクリプトファイル -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.js" charset="utf-8"></script>
+    <script src="./js/lib/c3.js" charset="utf-8" ></script>
+    <script src="./js/main.js" charset="utf-8" ></script>
+  </body>
 </html>
