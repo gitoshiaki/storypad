@@ -94,7 +94,6 @@ def trend_genre(genre):
     return json.dumps({'columns': lst}, ensure_ascii=False)
 
 
-
 @app.route('/api/trend/magazine/<magazine>')
 def trend_magazine(magazine):
 
@@ -172,5 +171,5 @@ def comic(title):
     return json.dumps(info, ensure_ascii=False)
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     app.run(debug=True, port=8000)
