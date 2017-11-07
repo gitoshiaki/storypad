@@ -24,41 +24,122 @@
     <meta name="twitter:description" content="Content description less than 200 characters">
     <meta name="twitter:image" content="https://example.com/image.jpg">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/normalize.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/lib/c3.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   </head>
   <body>
-    <header>
-      <nav>
-        <h1>Storypad</h1>
-        <a href="#">作品名で検索</a>
-        <a href="#">ジャンルで検索</a>
-        <a href="#">該当作品を解析</a>
-      </nav>
-    </header>
-    <main>
-      <section class="search">
-        <h2>Section Title</h2>
-        <p>Section content</p>
-        <div id="chart"></div>
-      </section>
-      <section>
-        <h2>Section Title</h2>
-        <p>Section content</p>
-      </section>
-      <section>
-        <h2>Section Title</h2>
-        <p>Section content</p>
-      </section>
-    </main>
-    <footer>
+    <div id="app">
+      <header>
+        <nav>
+          <h1>Storypad</h1>
+          <router-link to="/">作品名で検索</router-link>
+          <router-link to="/">ジャンルで検索</router-link>
+          <router-link to="/">該当作品を解析</router-link>
+        </nav>
+      </header>
+      <main>
 
-    </footer>
+        <router-view></router-view>
+
+      </main>
+    </div>
 
     <!-- スクリプトファイル -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.js" charset="utf-8"></script>
     <script src="{{ url_for('static', filename='js/lib/c3.js') }}" charset="utf-8"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}" charset="utf-8"></script>
+
+
+    <!--
+    //////////////////////////////////////////
+    テンプレート
+    //////////////////////////////////////////
+    -->
+
+    <!-- 検索テンプレート -->
+    <script type="text/x-template" id="search_template">
+      <section id="search_box-wrapper" class="search">
+
+        <h2>作品を検索</h2>
+
+        <form v-on:submit.prevent="onSubmit" id="search_box" method="get">
+          <input id="text_box" type="text" v-model='keyword'>
+          <button id="search_button" type="submit">
+            <i class="fa fa-search search-icon" aria-hidden="true"></i>
+          </button>
+        </form>
+
+        <ul id="genres">
+          <li><router-link to="trend/少年漫画">少年漫画</router-link></li>
+          <li><router-link to="trend/青年漫画">青年漫画</router-link></li>
+          <li><router-link to="trend/少女漫画">少女漫画</router-link></li>
+          <li><router-link to="trend/女性漫画">女性漫画</router-link></li>
+        </ul>
+
+        <router-link to="network">ネットワーク図へ</router-link>
+
+        <h2 v-if="searching">((keyword))の検索結果</h2>
+        <ul id="search_results">
+          <li v-for='result in results.data' class="search_result">
+            <router-link v-bind:to="'comic/'+result">((result))</router-link>
+          </li>
+        </ul>
+
+      </section>
+    </script>
+
+    <!-- トレンドチャート -->
+    <script type="text/x-template" id="trend_template">
+      <section class="line-chart">
+        <h2>(( $route.params.genre ))のトレンド</h2>
+        <p>各ジャンルの年別タイトル数</p>
+        <div id="chart"></div>
+      </section>
+    </script>
+
+    <!-- ネットワーク -->
+    <script type="text/x-template" id="network_template">
+      <section class="network-graph">
+        <h2>ネットワーク図</h2>
+        <p>ネットワーク図</p>
+        <div id="network_graph">
+          <svg></svg>
+        </div>
+      </section>
+    </script>
+
+    <!-- 検索結果 -->
+    <script type="text/x-template" id="results_template">
+      <section>
+        <h2>(())の検索結果</h2>
+        <ul id="search_results">
+          <li class="search_result"><a href='[[href]]'>[[value]]</li>
+        </ul>
+      </section>
+    </script>
+
+    <!-- 作品詳細 -->
+    <script type="text/x-template" id="detail_template">
+      <section>
+        <h2>((title))の作品詳細</h2>
+        <table id="details" class="type04">
+        	<tr v-for='row in data'>
+            <th scope='row'>((key))</th>
+            <td>((value))</td>
+          </tr>
+        </table>
+      </section>
+    </script>
+
+    <!-- vueファイル -->
+    <script src="{{ url_for('static', filename='js/index.js') }}" charset="utf-8"></script>
+
   </body>
 </html>
