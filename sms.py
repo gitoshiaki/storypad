@@ -7,12 +7,15 @@ import json
 import itertools
 import collections
 import numpy as np
+
+import sys
+sys.path.append('data')
 from const import NEW_THEME
 
 app = Flask(__name__)
 CORS(app)
 
-FILE = 'new_comic_dict.json'
+FILE = 'data/new_comic_dict.json'
 with open(FILE, 'r') as fp:
     data = json.load(fp)
 
@@ -94,7 +97,6 @@ def trend_genre(genre):
     return json.dumps({'columns': lst}, ensure_ascii=False)
 
 
-
 @app.route('/api/trend/magazine/<magazine>')
 def trend_magazine(magazine):
 
@@ -173,4 +175,10 @@ def comic(title):
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     app.run(debug=True)
+=======
+
+    app.run(debug=True)
+
+>>>>>>> f8e69f017ec751aa0ab87c5007b9539015121eff
