@@ -20,9 +20,14 @@ with open(FILE, 'r') as fp:
     data = json.load(fp)
 
 
-@app.route('/')
-def hello_world():
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def hello_world(path):
     return render_template('index.html')
+
+@app.route('/api/themes')
+def themes():
+    return json.dumps(NEW_THEME, ensure_ascii=False)
 
 
 @app.route('/api/network_graph')
@@ -153,7 +158,7 @@ def search():
     return json.dumps(lst, ensure_ascii=False)
 
 
-@app.route('/comic/<title>')
+@app.route('/api/comic/<title>')
 def comic(title):
 
     info = data[title]
@@ -177,4 +182,3 @@ def comic(title):
 if __name__ == '__main__':
 
     app.run(debug=True)
-

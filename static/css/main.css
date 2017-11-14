@@ -1,8 +1,8 @@
 body {
-    background: lightgrey;
+    background: rgba(211, 211, 211, 0.4);
     height: 100%;
     margin: 0;
-    padding: 11rem 0;
+    padding: 8rem 0;
     color: dimgrey;
 }
 
@@ -11,20 +11,30 @@ a{
   color: inherit;
 }
 
+nav a + a {
+  margin-left: 1rem;
+}
+
 header {
-  position: fixed;
-  width: 100%;
-  height: 10rem;
-  top: 0;
-  background: white;
-  box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
-  z-index: 9999;
-  padding: 2rem 0 0;
-  box-sizing: border-box;
+    position: fixed;
+    width: 100%;
+    height: 6.5rem;
+    top: 0;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+    z-index: 9999;
+    padding: 2rem 0 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 1.5rem;
 }
 
 nav,
+.back,
 section {
+    display: block;
     width: 80vw;
     margin: 0 auto;
     box-sizing: border-box;
@@ -32,9 +42,243 @@ section {
 
 section {
     display: block;
+    opacity: 0;
     min-width: max-content;
-    margin: 1rem auto;
+    margin: 5rem auto 1rem;
     padding: 2rem;
-    box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+    animation: loadingSection .5s ease-out;
+    animation-fill-mode: forwards;
+}
+
+section.card{
+  box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+  background: white;
+}
+
+section h2 {
+  position: absolute;
+  top: -3rem;
+}
+
+section.card h2 {
+  top: -4.5rem;
+}
+
+h3 {
+    padding: 1rem 0 .8rem;
+    font-size: 0.8rem;
+}
+
+.back{
+  padding: 1rem 2rem;
+}
+
+.clearfix:after{
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/*
+/////////////////////////////////////////////
+
+検索ボックス
+
+/////////////////////////////////////////////
+*/
+
+#search_box-wrapper {
+    display: block;
+    position: relative;
+    z-index: 99;
+    background: none;
+    box-shadow: none;
+}
+
+/*
+search_box
+*/
+
+#search_box {
+    position: relative;
+    width: 100%;
+    font-size: 1rem;
+    transition: box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    height: 3rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+/*
+text_box
+*/
+
+#text_box, #search_button {
+    display: inline-block;
+    height: inherit;
+    box-sizing: border-box;
+    margin: 0;
+    border: 0px;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+#text_box{
+    width: inherit;
+    padding: 1rem;
+}
+
+/*
+search_button
+*/
+
+#search_button {
+    width: 45px;
+    background: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/*
+/////////////////////////////////////////////
+
+ジャンル検索
+
+/////////////////////////////////////////////
+*/
+
+#genres li + li {
+    margin-left: 4%;
+}
+
+#genres li {
+    display: inline-block;
+    float: left;
+    text-align: center;
+    width: 22%;
+    box-sizing: border-box;
     background: white;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+#genres li a {
+    width: 100%;
+    display: block;
+    line-height: 3rem;
+}
+
+/*
+/////////////////////////////////////////////
+
+検索結果
+
+/////////////////////////////////////////////
+*/
+
+* + h2 {
+    margin-top: 3rem;
+}
+
+#search_results {
+    margin-top: 2rem;
+}
+
+.search_result a {
+    display: block;
+    line-height: 3.5rem;
+    padding-left: 1rem;
+    transition: ease .2s;
+    /* box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08); */
+    /* margin-top: 1rem; */
+    border-top: 1px solid grey;
+    font-size: 0.8rem;
+}
+
+.search_result:last-child {
+    border-bottom: 1px solid grey;
+}
+
+.search_result a:hover {
+    /* background: rgba(128, 128, 128, 0.1); */
+    padding-left: 30px;
+    cursor: pointer;
+}
+
+.toAnalyze {
+    float: right;
+    padding: 0 2rem;
+    opacity: 0;
+    /* border-left: .5px solid black; */
+    /* color: white; */
+    /* background: indianred; */
+    transition: .2s ease;
+}
+
+.search_result:hover .toAnalyze {
+    opacity: 1;
+}
+
+
+/*
+/////////////////////////////////////////////
+
+コミック詳細情報
+
+/////////////////////////////////////////////
+*/
+
+#datails{
+  width: 100%;
+}
+
+table.type04 {
+	border-collapse: separate;
+	border-spacing: 1px;
+	text-align: left;
+	line-height: 1.5;
+	border-top: 1px solid #ccc;
+}
+table.type04 th {
+	width: 150px;
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+}
+table.type04 td {
+	width: 350px;
+	padding: 10px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+}
+
+#similar_comic td {
+    display: block;
+    max-height: 400px;
+    overflow: scroll;
+}
+
+#similar_comic a {
+    display: block;
+    padding: .5rem 0;
+}
+
+
+/*
+/////////////////////////////////////////////
+
+アニメーション
+
+/////////////////////////////////////////////
+*/
+
+@keyframes loadingSection {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+   }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+   }
 }
