@@ -24,6 +24,10 @@ with open(FILE, 'r') as fp:
 def hello_world():
     return render_template('index.html')
 
+@app.route('/api/themes')
+def themes():
+    return json.dumps(NEW_THEME, ensure_ascii=False)
+
 
 @app.route('/api/network_graph')
 def network_graph():
@@ -175,10 +179,5 @@ def comic(title):
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-    app.run(debug=True)
-=======
 
     app.run(debug=True)
-
->>>>>>> f8e69f017ec751aa0ab87c5007b9539015121eff
