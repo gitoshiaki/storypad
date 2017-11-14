@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   // watchモードを有効にする
-  // watch: true,
+  watch: true,
   // エントリーポイントの設定
   entry: './src/js/app.js',
   // 出力の設定

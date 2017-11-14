@@ -8,6 +8,7 @@ const Search = {
     return {
       keyword: '',
       results: {},
+      themes: [],
       searching: false
     }
   },
@@ -34,8 +35,21 @@ const Search = {
             vm.results = 'Error! Could not reach the API. ' + error
           })
 
+    },
+    getThemes: function(){
+      var vm = this;
+      var url = 'http://'+location.host+"/api/themes";
+      axios.get(url)
+        .then(function (response) {
+          vm.themes = response
+        })
+        .catch(function (error) {
+          vm.themes = 'Error! Could not reach the API. ' + error
+        })
     }
-
+  },
+  created: function(){
+    this.getThemes();
   }
 }
 
@@ -51,17 +65,27 @@ const Detail = {
       title: this.$route.params.title
     }
   },
-  created: function(){
-    var vm = this;
-    var url = 'http://'+location.host+"/comic/"+vm.title;
+  watch: {
+    '$route' (to, from) {
+      this.getdata();
+    }
+  },
+  methods: {
+    getdata: function(){
+      var vm = this;
+      var url = 'http://'+location.host+"/api/comic/"+vm.title;
 
-    axios.get(url)
-        .then(function (response) {
-          vm.data = response.data;
-        })
-        .catch(function (error) {
-          vm.data = 'Error! Could not reach the API. ' + error
-        })
+      axios.get(url)
+          .then(function (response) {
+            vm.data = response.data;
+          })
+          .catch(function (error) {
+            vm.data = 'Error! Could not reach the API. ' + error
+          })
+    }
+  },
+  created: function(){
+    this.getdata();
   }
  }
 
@@ -93,40 +117,37 @@ const Trend = {
   }
  }
 
-const Network = {
+
+Vue.component('back-button', {
+  name: "backButton",
+  template: "<a class='back' v-on:click='this.$route.router.go(-1)'>戻る</a>"
+})
+
+Vue.component('network-graph', {
   name: "network",
   delimiters: ["((", "))"],
   template: '#network_template',
   data: function(){
     return {
-      data: {}//,
-      // genre: this.$route.params.title
+      data: {}
     }
   },
   created: function(){
-    var vm = this;
     var url = 'http://'+location.host+"/api/network_graph";
-
-    // 領域の確定
-    var svg = d3.select('svg');
-        // width = svg.attr("width": $('#network_graph').width(); ),
-        // height = svg.attr("height": $('#network_graph').height(); );
-
-    d3.json(url, function(error, graph) {
-
-      vm.data = graph;
-
-
-    });
-
+    forceLayout.config = {
+      width: 600,
+      // width: $("#network_graph").width(),
+      height: 600,
+      jsonURI: url
+    };
+    forceLayout.start();
   }
- }
+ })
 
 const routes = [
   { path: '/', component: Search },
   { path: '/search/:word', component: Results ,params: true },
   { path: '/trend/:genre', component: Trend ,params: true  },
-  { path: '/network', component: Network ,params: true  },
   { path: '/comic/:title', component: Detail ,params: true }
 ]
 

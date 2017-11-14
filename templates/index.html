@@ -37,25 +37,22 @@
     <div id="app">
       <header>
         <nav>
-          <h1>Storypad</h1>
-          <router-link to="/">作品名で検索</router-link>
+          <h1><a href="/">Storypad</a></h1>
+          <!-- <router-link to="/">作品名で検索</router-link>
           <router-link to="/">ジャンルで検索</router-link>
-          <router-link to="/">該当作品を解析</router-link>
+          <router-link to="/">該当作品を解析</router-link> -->
         </nav>
       </header>
-      <main>
 
-        <router-view></router-view>
+      <router-view></router-view>
 
-      </main>
     </div>
 
     <!-- スクリプトファイル -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.js" charset="utf-8"></script>
     <script src="{{ url_for('static', filename='js/lib/c3.js') }}" charset="utf-8"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}" charset="utf-8"></script>
-
+    <script src="{{ url_for('static', filename='js/forceLayout.js') }}" charset="utf-8"></script>
 
     <!--
     //////////////////////////////////////////
@@ -65,77 +62,120 @@
 
     <!-- 検索テンプレート -->
     <script type="text/x-template" id="search_template">
-      <section id="search_box-wrapper" class="search">
+      <main>
+        <section id="search_box-wrapper" class="search">
+          <h2>作品を検索</h2>
+          <form v-on:submit.prevent="onSubmit" id="search_box" method="get">
+            <input id="text_box" type="text" placeholder="作品名で検索" v-model='keyword'>
+            <button id="search_button" type="submit">
+              <i class="fa fa-search search-icon" aria-hidden="true"></i>
+            </button>
+          </form>
 
-        <h2>作品を検索</h2>
+          <ul id="genres" class="clearfix">
+            <li><router-link to="trend/少年漫画">少年漫画</router-link></li>
+            <li><router-link to="trend/青年漫画">青年漫画</router-link></li>
+            <li><router-link to="trend/少女漫画">少女漫画</router-link></li>
+            <li><router-link to="trend/女性漫画">女性漫画</router-link></li>
+          </ul>
 
-        <form v-on:submit.prevent="onSubmit" id="search_box" method="get">
-          <input id="text_box" type="text" v-model='keyword'>
-          <button id="search_button" type="submit">
-            <i class="fa fa-search search-icon" aria-hidden="true"></i>
-          </button>
-        </form>
+          <!-- <ul id="themes">
+            <li v-for='result in results.data'>
+              <router-link v-bind:to="trend/少年漫画">
+                ((result))
+              </router-link>
+            </li>
+          </ul> -->
 
-        <ul id="genres">
-          <li><router-link to="trend/少年漫画">少年漫画</router-link></li>
-          <li><router-link to="trend/青年漫画">青年漫画</router-link></li>
-          <li><router-link to="trend/少女漫画">少女漫画</router-link></li>
-          <li><router-link to="trend/女性漫画">女性漫画</router-link></li>
-        </ul>
+          <ul id="search_results">
+            <h3 v-if='results.data'>((results.data.length))件の検索結果が見つかりました。</h3>
+            <li v-for='result in results.data' class="search_result">
+              <router-link v-bind:to="'comic/'+result">
+                ((result))
+                <span class="toAnalyze">解析へ</span>
+              </router-link>
+            </li>
+          </ul>
 
-        <router-link to="network">ネットワーク図へ</router-link>
-
-        <h2 v-if="searching">((keyword))の検索結果</h2>
-        <ul id="search_results">
-          <li v-for='result in results.data' class="search_result">
-            <router-link v-bind:to="'comic/'+result">((result))</router-link>
-          </li>
-        </ul>
-
-      </section>
+        </section>
+        <!-- <network-graph></network-graph> -->
+      </main>
     </script>
 
     <!-- トレンドチャート -->
     <script type="text/x-template" id="trend_template">
-      <section class="line-chart">
-        <h2>(( $route.params.genre ))のトレンド</h2>
-        <p>各ジャンルの年別タイトル数</p>
-        <div id="chart"></div>
-      </section>
+      <main>
+        <section class="line-chart card">
+          <h2>(( $route.params.genre ))のトレンド</h2>
+          <p>各ジャンルの年別タイトル数</p>
+          <div id="chart"></div>
+        </section>
+      </main>
     </script>
 
     <!-- ネットワーク -->
     <script type="text/x-template" id="network_template">
-      <section class="network-graph">
-        <h2>ネットワーク図</h2>
-        <p>ネットワーク図</p>
-        <div id="network_graph">
-          <svg></svg>
-        </div>
-      </section>
+        <section class="network-graph">
+          <h2>ネットワーク図</h2>
+          <p>ネットワーク図</p>
+          <div id="network_graph">
+          </div>
+        </section>
     </script>
 
     <!-- 検索結果 -->
     <script type="text/x-template" id="results_template">
-      <section>
-        <h2>(())の検索結果</h2>
-        <ul id="search_results">
-          <li class="search_result"><a href='[[href]]'>[[value]]</li>
-        </ul>
-      </section>
+      <main>
+        <section>
+          <h2>(())の検索結果</h2>
+          <ul id="search_results">
+            <li class="search_result"><a href='[[href]]'>[[value]]</li>
+          </ul>
+        </section>
+      </main>
     </script>
 
     <!-- 作品詳細 -->
     <script type="text/x-template" id="detail_template">
-      <section>
-        <h2>((title))の作品詳細</h2>
-        <table id="details" class="type04">
-        	<tr v-for='row in data'>
-            <th scope='row'>((key))</th>
-            <td>((value))</td>
-          </tr>
-        </table>
-      </section>
+      <main>
+        <section>
+          <h2>((title))の作品詳細</h2>
+          <table id="details" class="type04">
+          	<tr>
+              <th >作者</th>
+              <td>
+                <span v-for='artist in data.artist'>
+                  ((artist))
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th >区分</th>
+              <td >((data.genre))</td>
+            </tr>
+            <tr>
+              <th >テーマ</th>
+              <td>
+                <span v-for='theme in data.theme'>
+                  ((theme))
+                </span>
+              </td>
+            </tr>
+            <tr id="similar_comic">
+              <th >類似作品</th>
+              <td>
+                <router-link
+                class="sc_comic"
+                v-for='similar_comic in data.similar_comic'
+                v-bind:to="'/comic/'+similar_comic">
+                  ((similar_comic))
+                </router-link>
+              </td>
+            </tr>
+          </table>
+        </section>
+        <network-graph></network-graph>
+      </main>
     </script>
 
     <!-- vueファイル -->
