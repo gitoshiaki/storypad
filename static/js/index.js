@@ -25,7 +25,7 @@ const Search = {
     getResults: function(keyword){
       var vm = this;
       vm.searching = true;
-      var url = 'http://'+location.host+"/api/search?title="+keyword;
+      var url = '//'+location.host+"/api/search?title="+keyword;
 
       axios.get(url)
           .then(function (response) {
@@ -38,7 +38,7 @@ const Search = {
     },
     getThemes: function(){
       var vm = this;
-      var url = 'http://'+location.host+"/api/themes";
+      var url = '//'+location.host+"/api/themes";
       axios.get(url)
         .then(function (response) {
           vm.themes = response
@@ -73,7 +73,7 @@ const Detail = {
   methods: {
     getdata: function(){
       var vm = this;
-      var url = 'http://'+location.host+"/api/comic/"+vm.title;
+      var url = '//'+location.host+"/api/comic/"+vm.title;
 
       axios.get(url)
           .then(function (response) {
@@ -101,7 +101,7 @@ const Trend = {
   },
   created: function(){
     var vm = this;
-    var url = 'http://'+location.host+"/api/trend/genre/"+vm.genre;
+    var url = '//'+location.host+"/api/trend/genre/"+vm.genre;
 
     axios.get(url)
         .then(function (response) {
@@ -133,7 +133,7 @@ Vue.component('network-graph', {
     }
   },
   created: function(){
-    var url = 'http://'+location.host+"/api/network_graph";
+    var url = '//'+location.host+"/api/network_graph";
     forceLayout.config = {
       width: 600,
       // width: $("#network_graph").width(),
