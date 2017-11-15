@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard｜Storypad</title>
+    <meta name="description" content="Description of the page less than 150 characters">
+    <link rel="icon" type="image/png" href="https://example.com/favicon32x32.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/page.html">
+    <meta property="og:title" content="Content Title">
+    <meta property="og:image" content="https://example.com/image.jpg">
+    <meta property="og:description" content="Description Here">
+    <meta property="og:site_name" content="Site Name">
+    <meta property="og:locale" content="en_US">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@site_account">
+    <meta name="twitter:creator" content="@individual_account">
+    <meta name="twitter:url" content="https://example.com/page.html">
+    <meta name="twitter:title" content="Content Title">
+    <meta name="twitter:description" content="Content description less than 200 characters">
+    <meta name="twitter:image" content="https://example.com/image.jpg">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/normalize.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/lib/c3.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css')}}">
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <nav>
+          <h1>Storypad</h1>
+          <router-link to="/">作品名で検索</router-link>
+          <router-link to="/">ジャンルで検索</router-link>
+          <router-link to="/">該当作品を解析</router-link>
+        </nav>
+      </header>
+
+      <router-view></router-view>
+
+    </div>
+
+    <!-- スクリプトファイル -->
+    <script src="{{ url_for('static', filename='js/lib/c3.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='js/bundle.js') }}" charset="utf-8"></script>
+
+  </body>
+</html>

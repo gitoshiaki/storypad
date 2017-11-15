@@ -69,18 +69,8 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_addition_calculator__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_tax_calculator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_Search__ = __webpack_require__(1);
 
-
-
-var item1Price = 400;
-var item2Price = 600;
-var totalPrice = Object(__WEBPACK_IMPORTED_MODULE_0__modules_addition_calculator__["a" /* default */])(item1Price, item2Price);
-var tax = 1.08;
-var priceIncludeTax = Object(__WEBPACK_IMPORTED_MODULE_1__modules_tax_calculator__["a" /* default */])(totalPrice, tax);
-
-console.log(priceIncludeTax);
 
 
 /***/ }),
@@ -88,21 +78,45 @@ console.log(priceIncludeTax);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = additionCalculator;
-function additionCalculator(number1 ,number2) {
-  return number1 + number2;
-}
+/* unused harmony default export */ var _unused_webpack_default_export = ({
 
+  name: "searchbox",
+  delimiters: ["((", "))"],
+  template: '#search_template',
+  data: function(){
+    return {
+      keyword: '',
+      results: {},
+      searching: false
+    }
+  },
+  watch: {
+    keyword: function(keyword){
+      if (keyword !== '') {
+        this.getResults(keyword);
+      }else {
+        this.searching = false;
+      }
+    }
+  },
+  methods: {
+    getResults: function(keyword){
+      var vm = this;
+      vm.searching = true;
+      var url = 'http://'+location.host+"/api/search?title="+keyword;
 
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+      axios.get(url)
+          .then(function (response) {
+            vm.results = response
+          })
+          .catch(function (error) {
+            vm.results = 'Error! Could not reach the API. ' + error
+          })
 
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = taxCalculator;
-function taxCalculator(price ,tax) {
-  return Math.round(price * tax);
-}
+    }
+
+  }
+});
 
 
 /***/ })
