@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-.python-version
-=======
 node_modules/
->>>>>>> master
 /notebook/
 /test/
