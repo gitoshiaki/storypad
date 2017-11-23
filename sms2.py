@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from wordcloud import WordCloud
 
 import io
+import os
 import json
 import itertools
 import collections
@@ -241,4 +242,5 @@ def similar_comics(title, returnJson=True, returnIDs=False):
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	port = int(os.environ.get("PORT", 5000))
+	app.run(host="0.0.0.0", port=port)
