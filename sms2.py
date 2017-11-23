@@ -4,10 +4,10 @@ from flask_cors import CORS
 from db_setup import engine, Comics, ComicReviewNouns, ComicStoryNouns, ReviewNouns, StoryNouns
 from sqlalchemy.orm import sessionmaker
 
-import os
 import json
-import pickle
 import numpy as np
+
+from my_module import file2object
 
 Session = sessionmaker(engine)
 session = Session()
@@ -15,35 +15,23 @@ session = Session()
 app = Flask(__name__)
 CORS(app)
 
-
-def file2object(filepath):
-	root, ext = os.path.splitext(filepath)
-
-	isPickle = ext == '.pickle'
-	if isPickle:
-		mode = 'rb'
-		encoding = None
-	else:
-		mode = 'r'
-		encoding = 'utf-8'
-
-	with open(filepath, mode=mode, encoding=encoding) as fp:
-		if isPickle:
-			return pickle.load(fp)
-		else:
-			return json.load(fp)
-
-
+# consts and converters
 NETWORK_GRAPH = file2object('./misc/network_graph.json')
+COMICS_ARRAY = np.load('./misc/comics_array.npy')
 
 consts = file2object('./misc/consts.pickle')
 THEME17 = consts['theme17']
-GENRES = consts['genres']
-MAGAZINES = consts['magazines']
+THEME48 = consts['theme48']
+
+converter = file2object('./misc/cvt.pickle')
+num2theme    = converter['theme17']
+theme2num    = converter['theme17_']
+num2magazine = converter['magazine']
+num2genre    = converter['genre']
 
 
 def calculate_distance(title_id, array):
-	"""対象の漫画と他の漫画とのユークリッド距離を求めて、タプル（title_id, distance）をリストに追加"""
+	"""対象の漫画と他の漫画とのユークリッド距離を求めて、距離の近い３０作品のtitle_idと距離の値のリストを作る"""
 	distance_list = []
 	vec0 = array[title_id]
 	for i, vec1 in enumerate(array):
@@ -52,6 +40,8 @@ def calculate_distance(title_id, array):
 			continue
 		else:
 			distance_list.append((i, distance))
+	distance_list = sorted(distance_list, key=lambda x: x[1])[:30]
+
 	return distance_list
 
 
@@ -123,6 +113,7 @@ def comic(title):
 	return json.dumps(data, ensure_ascii=False)
 
 
+# TODO: サーバーサイドで文字クラウドを生成
 @app.route('/api/word_cloud/<title>')
 def word_cloud(title):
 	similar_comic_ids = similar_comics(title, returnIDs=True)
@@ -150,9 +141,7 @@ def word_cloud(title):
 @app.route('/api/similar_comics/<title>')
 def similar_comics(title, returnJson=True, returnIDs=False):
 	title_id = session.query(Comics.title_id).filter_by(title=title).first()[0]
-	comics_array = np.load('./misc/comics_array.npy')
-	distances = calculate_distance(title_id, comics_array)
-	distances = sorted(distances, key=lambda x: x[1])[:30]
+	distances = calculate_distance(title_id, COMICS_ARRAY)
 	similar_comic_ids = [t_id for t_id, _ in distances]
 
 	if returnIDs:
