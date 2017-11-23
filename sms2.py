@@ -9,12 +9,6 @@ import numpy as np
 
 from my_module import file2object
 
-Session = sessionmaker(engine)
-session = Session()
-
-app = Flask(__name__)
-CORS(app)
-
 # consts and converters
 NETWORK_GRAPH = file2object('./misc/network_graph.json')
 COMICS_ARRAY = np.load('./misc/comics_array.npy')
@@ -28,6 +22,12 @@ num2theme    = converter['theme17']
 theme2num    = converter['theme17_']
 num2magazine = converter['magazine']
 num2genre    = converter['genre']
+
+Session = sessionmaker(engine)
+session = Session()
+
+app = Flask(__name__)
+CORS(app)
 
 
 def calculate_distance(title_id, array):
@@ -99,8 +99,8 @@ def search_by_title():
 def comic(title):
 	res = session.query(Comics).filter_by(title=title).first()
 	similar_comic_list = similar_comics(title, returnJson=False)
-	genre = GENRES[res.genre_id]
-	magazine = MAGAZINES[res.magazine_id]
+	genre = num2genre[res.genre_id]
+	magazine = num2magazine[res.magazine_id]
 	data = {
 		'title': res.title,
 		'artist': res.artist,
@@ -159,4 +159,3 @@ def similar_comics(title, returnJson=True, returnIDs=False):
 
 if __name__ == '__main__':
 	app.run(debug=True)
-
