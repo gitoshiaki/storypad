@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from wordcloud import WordCloud
 
 import io
+import os
 import json
 import itertools
 import collections
