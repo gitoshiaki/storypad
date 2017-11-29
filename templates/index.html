@@ -65,7 +65,8 @@
       <main>
         <section id="search_box-wrapper" class="search">
           <h2>作品を検索</h2>
-          <form v-on:submit.prevent="onSubmit" id="search_box" method="get">
+          <form v-on:submit.prevent="" id="search_box" method="get">
+          <!-- <form v-on:submit.prevent="onSubmit" id="search_box" method="get"> -->
             <input id="text_box" type="text" placeholder="作品名で検索" v-model='keyword'>
             <button id="search_button" type="submit">
               <i class="fa fa-search search-icon" aria-hidden="true"></i>

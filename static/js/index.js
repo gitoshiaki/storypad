@@ -66,12 +66,11 @@ const Detail = {
     }
   },
   watch: {
-    '$route' (to, from) {
-      this.getdata();
-    }
+    '$route': 'getdata'
   },
   methods: {
     getdata: function(){
+      this.title = this.$route.params.title;
       var vm = this;
       var url = '//'+location.host+"/api/comic/"+vm.title;
 
@@ -87,6 +86,10 @@ const Detail = {
   created: function(){
     this.getdata();
   }
+  // beforeRouteUpdate: function(){
+  //   this.getdata();
+  //   next();
+  // }
  }
 
 const Trend = {
