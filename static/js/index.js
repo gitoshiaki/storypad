@@ -9,22 +9,20 @@ const Search = {
       keyword: '',
       results: {},
       themes: [],
-      searching: false
     }
   },
   watch: {
     keyword: function(keyword){
       if (keyword !== '') {
         this.getResults(keyword);
-      }else {
-        this.searching = false;
       }
     }
   },
   methods: {
+
+    //検索結果を取得する
     getResults: function(keyword){
       var vm = this;
-      vm.searching = true;
       var url = '//'+location.host+"/api/search?title="+keyword;
 
       axios.get(url)
@@ -36,9 +34,12 @@ const Search = {
           })
 
     },
+
+    // テーマ一覧を取得する
     getThemes: function(){
       var vm = this;
       var url = '//'+location.host+"/api/themes";
+
       axios.get(url)
         .then(function (response) {
           vm.themes = response
@@ -48,6 +49,7 @@ const Search = {
         })
     }
   },
+
   created: function(){
     this.getThemes();
   }
