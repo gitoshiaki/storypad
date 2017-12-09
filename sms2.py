@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template, send_file
 from flask_cors import CORS
 
-from db_setup import engine, Comics, ComicReviewNouns, ComicStoryNouns, ReviewNouns, StoryNouns
+from db_setup import engine, Comics, ComicReviewNouns, \
+	ComicStoryNouns, ReviewNouns, StoryNouns, ComicArtists, Artists
 from sqlalchemy.orm import sessionmaker
 
 from wordcloud import WordCloud
@@ -17,29 +18,29 @@ from my_module import load_file
 
 # consts and converters
 NETWORK_GRAPH = load_file('./misc/network_graph.json')
-COMICS_ARRAY  = np.load('./misc/comics_array.npy')
+COMICS_ARRAY = np.load('./misc/comics_array.npy')
 
 consts = load_file('./misc/consts.pickle')
 THEME17 = consts['theme17']
 THEME48 = consts['theme48']
 
 converter = load_file('./misc/cvt.pickle')
-num2theme    = converter['theme17']
-theme2num    = converter['theme17_']
+num2theme = converter['theme17']
+theme2num = converter['theme17_']
 num2magazine = converter['magazine']
 magazine2num = converter['magazine_']
-num2genre    = converter['genre']
-genre2num    = converter['genre_']
+num2genre = converter['genre']
+genre2num = converter['genre_']
 num2combination = converter['combination17']
 combination2num = converter['combination17_']
 
 # wordcloud settings
 font_path = './misc/ヒラギノ丸ゴ ProN W4.ttc'
 kwargs = {
-    'background_color': 'white',
-    'font_path': font_path,
-    'width': 1500,
-    'height': 1000
+	'background_color': 'white',
+	'font_path': font_path,
+	'width': 1500,
+	'height': 1000
 }
 
 Session = sessionmaker(engine)
@@ -104,6 +105,7 @@ def theme17():
 	return json.dumps(THEME17, ensure_ascii=False)
 
 
+# TODO: 正しいトレンドグラフを作る
 @app.route('/api/trend/genre/<genre>')
 def trend_genre(genre):
 	genre_id = genre2num[genre]
@@ -119,6 +121,7 @@ def trend_genre(genre):
 	return json.dumps(data, ensure_ascii=False)
 
 
+# TODO: 正しいトレンドグラフを作る
 @app.route('/api/trend/magazine/<magazine>')
 def trend_magazine(magazine):
 	magazine_id = magazine2num[magazine]
@@ -134,6 +137,7 @@ def trend_magazine(magazine):
 	return json.dumps(data, ensure_ascii=False)
 
 
+# TODO: 正しいトレンドグラフを作る
 @app.route('/api/trend/theme')
 def trend_theme():
 	array = np.zeros([17, 17])
@@ -148,6 +152,7 @@ def trend_theme():
 	return json.dumps(data, ensure_ascii=False)
 
 
+# TODO: 正しいトレンドグラフを作る
 @app.route('/api/trend/theme_combination')
 def trend_theme_combination():
 	array = np.zeros([17, 136])
@@ -162,17 +167,43 @@ def trend_theme_combination():
 	return json.dumps(data, ensure_ascii=False)
 
 
+# TODO: レスポンスないのタイトル数制限の有無
+@app.route('/api/search/genre')
+def search_by_genre():
+	genre = request.args.get('genre')
+	genre_id = genre2num[genre]
+	titles = []
+	for title_id, title in session.query(Comics.title_id, Comics.title) \
+		.filter_by(genre_id=genre_id).limit(30).all():
+		titles.append({
+			'title_id': title_id,
+			'title': title
+		})
+
+	return json.dumps(titles, ensure_ascii=False)
+
+
 @app.route('/api/search/theme')
 def search_by_theme():
-	pass
+	theme_lst = request.args.getlist('theme')
+	titles = []
+	for title_id, title, themes in session.query(Comics.title_id, Comics.title, Comics.theme17).all():
+		if set(themes) >= set(theme_lst):
+
+			titles.append({
+				'title_id': title_id,
+				'title': title
+			})
+
+	return json.dumps(titles, ensure_ascii=False)
 
 
 @app.route('/api/search')
 def search_by_title():
 	title = request.args.get('title')
 	titles = []
-	for r in session.query(Comics.title)\
-			.filter(Comics.title.op('like')('%{}%'.format(title))).all():
+	for r in session.query(Comics.title) \
+		.filter(Comics.title.op('like')('%{}%'.format(title))).all():
 		titles.append(r[0])
 	return json.dumps(titles, ensure_ascii=False)
 
@@ -195,23 +226,39 @@ def comic(title):
 	return json.dumps(data, ensure_ascii=False)
 
 
+@app.route('/api/artist/<artist_name>')
+def artist(artist_name):
+	lst = []
+	for title_id, title in session.query(Comics.title_id, Comics.title) \
+		.filter(Comics.title_id==ComicArtists.title_id) \
+		.filter(ComicArtists.artist_id==Artists.artist_id) \
+		.filter(Artists.artist_name==artist_name).all():
+
+		lst.append({
+			'title_id': title_id,
+			'title': title
+		})
+
+	return json.dumps(lst, ensure_ascii=False)
+
+
 # TODO: サーバーサイドで文字クラウドを生成
 @app.route('/api/word_cloud/<title>')
 def word_cloud(title):
 	similar_comic_ids = similar_comics(title, returnIDs=True)
 	words = {}
 
-	for w, v in session.query(ReviewNouns.noun_name, ComicReviewNouns.value)\
-		.filter(ReviewNouns.noun_id == ComicReviewNouns.noun_id)\
-		.filter(ComicReviewNouns.title_id.in_(similar_comic_ids)).all():
+	for w, v in session.query(ReviewNouns.noun_name, ComicReviewNouns.value) \
+			.filter(ReviewNouns.noun_id == ComicReviewNouns.noun_id) \
+			.filter(ComicReviewNouns.title_id.in_(similar_comic_ids)).all():
 		if w in words:
 			words[w] += v
 		else:
 			words[w] = v
 
-	for w, v in session.query(StoryNouns.noun_name, ComicStoryNouns.value)\
-		.filter(StoryNouns.noun_id == ComicStoryNouns.noun_id)\
-		.filter(ComicStoryNouns.title_id.in_(similar_comic_ids)).all():
+	for w, v in session.query(StoryNouns.noun_name, ComicStoryNouns.value) \
+			.filter(StoryNouns.noun_id == ComicStoryNouns.noun_id) \
+			.filter(ComicStoryNouns.title_id.in_(similar_comic_ids)).all():
 		if w in words:
 			words[w] += v
 		else:
@@ -219,7 +266,9 @@ def word_cloud(title):
 
 	wc = WordCloud(**kwargs).generate_from_frequencies(words)
 	return 'hello world'
-	# return send_file()
+
+
+# return send_file()
 
 
 @app.route('/api/similar_comics/<title>')
@@ -243,4 +292,4 @@ def similar_comics(title, returnJson=True, returnIDs=False):
 
 if __name__ == '__main__':
 	port = int(os.environ.get("PORT", 5000))
-	app.run(host="0.0.0.0", port=port)
+	app.run(host="0.0.0.0", port=port, debug=True)
