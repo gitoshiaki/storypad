@@ -54,18 +54,27 @@
     <script src="{{ url_for('static', filename='js/lib/c3.js') }}" charset="utf-8"></script>
     <script src="{{ url_for('static', filename='js/forceLayout.js') }}" charset="utf-8"></script>
 
+
+
+
+
     <!--
     //////////////////////////////////////////
     テンプレート
     //////////////////////////////////////////
     -->
 
+
+
+
+
     <!-- 検索テンプレート -->
     <script type="text/x-template" id="search_template">
       <main>
         <section id="search_box-wrapper" class="search">
           <h2>作品を検索</h2>
-          <form v-on:submit.prevent="onSubmit" id="search_box" method="get">
+          <form v-on:submit.prevent="" id="search_box" method="get">
+          <!-- <form v-on:submit.prevent="onSubmit" id="search_box" method="get"> -->
             <input id="text_box" type="text" placeholder="作品名で検索" v-model='keyword'>
             <button id="search_button" type="submit">
               <i class="fa fa-search search-icon" aria-hidden="true"></i>
@@ -79,13 +88,15 @@
             <li><router-link to="trend/女性漫画">女性漫画</router-link></li>
           </ul>
 
-          <!-- <ul id="themes">
-            <li v-for='result in results.data'>
-              <router-link v-bind:to="trend/少年漫画">
-                ((result))
-              </router-link>
-            </li>
-          </ul> -->
+          <div class="card__container">
+            <h3 class="card__title">テーマで検索</h3>
+            <ul id="themes" class="clearfix card__body">
+              <li v-for='theme in themes.data'>
+                <input v-bind:id="theme" type="checkbox"/>
+                <label v-bind:for="theme">((theme))</label>
+              </li>
+            </ul>
+          </div>
 
           <ul id="search_results">
             <h3 v-if='results.data'>((results.data.length))件の検索結果が見つかりました。</h3>
