@@ -1,15 +1,26 @@
-body {
-    background: rgba(211, 211, 211, 0.4);
-    height: 100%;
-    margin: 0;
-    padding: 8rem 0;
-    color: dimgrey;
-}
+
+/*------------------reset------------------*/
 
 a{
   text-decoration: none;
   color: inherit;
 }
+
+h1,h2,h3,h4,h5,ul{
+  margin: 0;
+  padding: 0;
+}
+
+/*------------------共通------------------*/
+
+body {
+    background: rgba(211, 211, 211, 0.4);
+    height: 100%;
+    margin: 0;
+    padding: 6.5rem 0;
+    color: dimgrey;
+}
+
 
 nav a + a {
   margin-left: 1rem;
@@ -20,10 +31,10 @@ header {
     width: 100%;
     height: 6.5rem;
     top: 0;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1);
     box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
     z-index: 9999;
-    padding: 2rem 0 0;
+    padding: 3rem 0 0;
     box-sizing: border-box;
 }
 
@@ -41,13 +52,13 @@ section {
 }
 
 section {
-    display: block;
-    opacity: 0;
-    min-width: max-content;
-    margin: 5rem auto 1rem;
-    padding: 2rem;
-    animation: loadingSection .5s ease-out;
-    animation-fill-mode: forwards;
+  display: block;
+  opacity: 0;
+  min-width: max-content;
+  margin: 4rem auto 1rem;
+  padding: 2rem;
+  animation: loadingSection .5s ease-out;
+  animation-fill-mode: forwards;
 }
 
 section.card{
@@ -57,7 +68,7 @@ section.card{
 
 section h2 {
   position: absolute;
-  top: -3rem;
+  top: -1rem;
 }
 
 section.card h2 {
@@ -101,6 +112,7 @@ search_box
 
 #search_box {
     position: relative;
+    margin-bottom: 1rem;
     width: 100%;
     font-size: 1rem;
     transition: box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -122,9 +134,9 @@ text_box
     border-radius: 0;
 }
 
-#text_box{
+#text_box {
     width: inherit;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 2rem;
 }
 
 /*
@@ -216,6 +228,48 @@ search_button
 
 .search_result:hover .toAnalyze {
     opacity: 1;
+}
+
+/*
+/////////////////////////////////////////////
+
+テーマ検索
+
+/////////////////////////////////////////////
+*/
+
+.card__container,
+.card__title,
+.card__body {
+  display: block;
+  box-sizing: border-box;
+}
+
+.card__container {
+  margin: 1rem 0;
+  height: auto;
+  width: inherit;
+  background: white;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08)
+}
+
+.card__title {
+  border-bottom: 1px solid lightgrey;
+  font-size: 1rem;
+  padding-left: 2rem;
+  line-height: 1rem;
+  font-weight: normal;
+}
+
+.card__body {
+  padding: 1rem 2rem 2rem;
+}
+
+#themes li {
+    display: block;
+    width: 50%;
+    line-height: 2rem;
+    float: left;
 }
 
 
