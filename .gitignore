@@ -1,3 +1,7 @@
+# ignore
 node_modules/
 /notebook/
 /test/
+
+# not ignore
+!misc/
