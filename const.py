@@ -1,3 +1,25 @@
+import numpy as np
+from my_module import load_file
+
+# consts and converters
+NETWORK_GRAPH = load_file('./misc/network_graph.json')
+COMICS_ARRAY = np.load('./misc/comics_array.npy')
+
+consts = load_file('./misc/consts.pickle')
+THEME17 = consts['theme17']
+THEME48 = consts['theme48']
+
+converter = load_file('./misc/cvt.pickle')
+num2theme = converter['theme17']
+theme2num = converter['theme17_']
+num2magazine = converter['magazine']
+magazine2num = converter['magazine_']
+num2genre = converter['genre']
+genre2num = converter['genre_']
+num2combination = converter['combination17']
+combination2num = converter['combination17_']
+
+# OTHER
 THEME = [
     '恋愛',
     '学園',
