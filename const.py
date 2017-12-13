@@ -1,15 +1,18 @@
+import os
 import numpy as np
 from my_module import load_file
 
-# consts and converters
-NETWORK_GRAPH = load_file('./misc/network_graph.json')
-COMICS_ARRAY = np.load('./misc/comics_array.npy')
+from config import ROOT_PATH
 
-consts = load_file('./misc/consts.pickle')
+# consts and converters
+NETWORK_GRAPH = load_file(os.path.join(ROOT_PATH, './misc/network_graph.json'))
+COMICS_ARRAY = np.load(os.path.join(ROOT_PATH, './misc/comics_array.npy'))
+
+consts = load_file(os.path.join(ROOT_PATH, './misc/consts.pickle'))
 THEME17 = consts['theme17']
 THEME48 = consts['theme48']
 
-converter = load_file('./misc/cvt.pickle')
+converter = load_file(os.path.join(ROOT_PATH, './misc/cvt.pickle'))
 num2theme = converter['theme17']
 theme2num = converter['theme17_']
 num2magazine = converter['magazine']
@@ -20,7 +23,29 @@ num2combination = converter['combination17']
 combination2num = converter['combination17_']
 
 # OTHER
-THEME = [
+GENRE = ['少年漫画', '青年漫画', '少女漫画', '女性漫画']
+
+THEME17 = [
+    'SF',
+    'お色気',
+    'ギャグ・コメディ',
+    'スポーツ',
+    'ダーク',
+    'バトル',
+    'ファンタジー',
+    'ホラー',
+    'ミステリー',
+    '人間ドラマ',
+    '冒険',
+    '動物',
+    '学園',
+    '恋愛',
+    '時代物',
+    '職業',
+    '音楽・芸術・料理'
+ ]
+
+THEME48 = [
     '恋愛',
     '学園',
     '人間ドラマ',
@@ -70,30 +95,6 @@ THEME = [
     'テニス・卓球',
     'バレーボール'
 ]
-
-'''
-THEME19 = [
-    '学園',
-    'ラブ',
-    'サスペンス',
-    'スポーツ',
-    'コメディ',
-    'バトル',
-    'SF',
-    'ファンタジー',
-    'アクション',
-    'ホラー',
-    'ギャグ',
-    '日常',
-    '音楽',
-    '歴史',
-    'ダーク',
-    '料理',
-    'ミステリー',
-    '警察',
-    '医療',
- ]
-'''
 
 CONVERT = {
     '恋愛': '恋愛',
@@ -206,26 +207,4 @@ PERSON_TYPE = [
     'ニート',
     '獣医',
     '擬人化'
- ]
-
-GENRE = ['少年漫画', '青年漫画', '少女漫画', '女性漫画']
-
-NEW_THEME = [
-    'SF',
-    'お色気',
-    'ギャグ・コメディ',
-    'スポーツ',
-    'ダーク',
-    'バトル',
-    'ファンタジー',
-    'ホラー',
-    'ミステリー',
-    '人間ドラマ',
-    '冒険',
-    '動物',
-    '学園',
-    '恋愛',
-    '時代物',
-    '職業',
-    '音楽・芸術・料理'
  ]
